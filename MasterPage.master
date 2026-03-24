@@ -1,0 +1,560 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>CasaCraft Decor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">
+        :root
+        {
+            --bg:#f4ede3;
+            --surface:#fffdf9;
+            --surface-alt:#f1e5d3;
+            --surface-strong:#e7d8c2;
+            --ink:#1d2b2a;
+            --muted:#6d716d;
+            --line:#d7ccbb;
+            --accent:#b85c38;
+            --accent-dark:#8f3d1f;
+            --accent-soft:#f3d4bf;
+            --success:#2d6b57;
+            --shadow:0 20px 48px rgba(38, 31, 24, 0.12);
+            --shadow-soft:0 10px 28px rgba(38, 31, 24, 0.08);
+        }
+        *
+        {
+            box-sizing:border-box;
+        }
+        body
+        {
+            margin:0;
+            font-family:"Palatino Linotype", "Book Antiqua", Georgia, serif;
+            color:var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(184,92,56,0.16), transparent 28%),
+                radial-gradient(circle at top right, rgba(29,43,42,0.08), transparent 22%),
+                linear-gradient(180deg, #fbf7f0 0%, #efe6d9 100%);
+        }
+        a
+        {
+            color:inherit;
+            text-decoration:none;
+        }
+        .page-shell
+        {
+            max-width:1240px;
+            margin:0 auto;
+            padding:0 24px 56px;
+        }
+        .site-header
+        {
+            position:sticky;
+            top:0;
+            z-index:10;
+            backdrop-filter:blur(14px);
+            background:rgba(251,247,240,0.9);
+            border-bottom:1px solid rgba(215,204,187,0.75);
+        }
+        .header-row
+        {
+            max-width:1240px;
+            margin:0 auto;
+            padding:18px 24px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:18px;
+        }
+        .brand
+        {
+            display:flex;
+            flex-direction:column;
+            gap:2px;
+        }
+        .brand-mark
+        {
+            font-size:34px;
+            letter-spacing:1px;
+            text-transform:uppercase;
+        }
+        .brand-sub
+        {
+            color:var(--muted);
+            font-size:13px;
+            letter-spacing:2px;
+            text-transform:uppercase;
+        }
+        .nav-links
+        {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+            justify-content:flex-end;
+        }
+        .nav-link,
+        .nav-cta,
+        .nav-soft
+        {
+            padding:10px 16px;
+            border-radius:999px;
+            font-size:14px;
+            transition:background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .nav-link
+        {
+            color:var(--ink);
+        }
+        .nav-link:hover
+        {
+            background:var(--surface-alt);
+            transform:translateY(-1px);
+        }
+        .nav-cta
+        {
+            background:var(--accent);
+            color:#fff;
+            box-shadow:var(--shadow);
+        }
+        .nav-cta:hover
+        {
+            background:var(--accent-dark);
+        }
+        .nav-soft
+        {
+            background:rgba(255,255,255,0.7);
+            border:1px solid var(--line);
+        }
+        .nav-soft:hover
+        {
+            background:#fff;
+        }
+        .cart-pill
+        {
+            display:inline-block;
+            min-width:24px;
+            padding:2px 8px;
+            margin-left:8px;
+            border-radius:999px;
+            background:#fff;
+            color:var(--accent-dark);
+            font-weight:bold;
+            text-align:center;
+        }
+        .hero-card,
+        .section-card,
+        .panel-card,
+        .summary-card,
+        .accent-card
+        {
+            background:var(--surface);
+            border:1px solid var(--line);
+            border-radius:24px;
+            box-shadow:var(--shadow);
+        }
+        .hero-card
+        {
+            overflow:hidden;
+        }
+        .section-title
+        {
+            font-size:32px;
+            margin:0 0 12px;
+        }
+        .section-subtitle
+        {
+            font-size:20px;
+            margin:0 0 10px;
+        }
+        .section-copy
+        {
+            color:var(--muted);
+            font-size:16px;
+            line-height:1.7;
+            margin:0;
+        }
+        .page-intro
+        {
+            padding:34px 0 24px;
+        }
+        .split-hero
+        {
+            display:grid;
+            grid-template-columns:minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap:24px;
+            align-items:stretch;
+        }
+        .hero-content
+        {
+            padding:36px;
+        }
+        .media-frame
+        {
+            position:relative;
+            overflow:hidden;
+            min-height:320px;
+            background:linear-gradient(145deg, rgba(184,92,56,0.16), rgba(29,43,42,0.08));
+        }
+        .media-frame img
+        {
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+            mix-blend-mode:multiply;
+        }
+        .stack
+        {
+            display:grid;
+            gap:20px;
+        }
+        .stat-row
+        {
+            display:flex;
+            flex-wrap:wrap;
+            gap:12px;
+            margin-top:24px;
+        }
+        .stat-pill
+        {
+            padding:12px 16px;
+            border-radius:18px;
+            background:rgba(255,255,255,0.78);
+            border:1px solid rgba(215,204,187,0.9);
+            min-width:140px;
+            box-shadow:var(--shadow-soft);
+        }
+        .stat-pill strong
+        {
+            display:block;
+            font-size:22px;
+            margin-bottom:2px;
+        }
+        .feature-list
+        {
+            margin:18px 0 0;
+            padding:0;
+            list-style:none;
+            display:grid;
+            gap:12px;
+        }
+        .feature-list li
+        {
+            padding:14px 16px;
+            border-radius:16px;
+            background:var(--surface-alt);
+            border:1px solid rgba(215,204,187,0.8);
+        }
+        .btn-primary,
+        .btn-secondary,
+        .btn-link,
+        .catalog-btn,
+        .admin-btn
+        {
+            display:inline-block;
+            border:none;
+            cursor:pointer;
+            border-radius:999px;
+            padding:12px 18px;
+            font-size:14px;
+            font-family:inherit;
+            transition:transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+            text-decoration:none;
+        }
+        .btn-primary,
+        .catalog-btn,
+        .admin-btn
+        {
+            background:var(--accent);
+            color:#fff;
+        }
+        .btn-primary:hover,
+        .catalog-btn:hover,
+        .admin-btn:hover
+        {
+            background:var(--accent-dark);
+            transform:translateY(-1px);
+        }
+        .btn-secondary
+        {
+            background:var(--surface-alt);
+            color:var(--ink);
+        }
+        .btn-secondary:hover
+        {
+            transform:translateY(-1px);
+        }
+        .btn-link
+        {
+            padding:0;
+            background:none;
+            color:var(--accent-dark);
+        }
+        .grid
+        {
+            display:grid;
+            gap:22px;
+        }
+        .product-grid
+        {
+            grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+        }
+        .product-card
+        {
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+            min-height:100%;
+        }
+        .product-card img
+        {
+            width:100%;
+            height:240px;
+            object-fit:cover;
+            display:block;
+        }
+        .product-card-body
+        {
+            padding:20px;
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            flex:1;
+        }
+        .eyebrow
+        {
+            text-transform:uppercase;
+            letter-spacing:2px;
+            font-size:12px;
+            color:var(--accent-dark);
+        }
+        .price
+        {
+            font-size:26px;
+        }
+        .muted
+        {
+            color:var(--muted);
+        }
+        .message
+        {
+            margin:0 0 18px;
+            padding:14px 18px;
+            border-radius:16px;
+            background:#eff7f3;
+            color:var(--success);
+            border:1px solid #cfe5dc;
+        }
+        .empty-state
+        {
+            padding:32px;
+            text-align:center;
+        }
+        .field,
+        .field textarea,
+        .field select,
+        .field input
+        {
+            font-family:inherit;
+        }
+        .field input,
+        .field textarea,
+        .field select
+        {
+            width:100%;
+            padding:12px 14px;
+            border-radius:14px;
+            border:1px solid var(--line);
+            background:#fff;
+            font-size:14px;
+        }
+        .form-grid
+        {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+            gap:16px;
+        }
+        .form-stack
+        {
+            display:grid;
+            gap:16px;
+        }
+        .form-grid .full
+        {
+            grid-column:1 / -1;
+        }
+        .field label
+        {
+            display:block;
+            margin:0 0 8px;
+            font-size:14px;
+            color:var(--muted);
+        }
+        .field-note
+        {
+            color:var(--muted);
+            font-size:13px;
+            margin-top:8px;
+        }
+        .table-shell
+        {
+            overflow-x:auto;
+        }
+        .data-table
+        {
+            width:100%;
+            border-collapse:collapse;
+        }
+        .data-table th,
+        .data-table td
+        {
+            padding:12px 10px;
+            border-bottom:1px solid var(--line);
+            text-align:left;
+            vertical-align:top;
+        }
+        .data-table th
+        {
+            color:var(--muted);
+            font-size:13px;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            background:rgba(241,229,211,0.52);
+        }
+        .data-table tr:last-child td
+        {
+            border-bottom:none;
+        }
+        .info-grid
+        {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+            gap:20px;
+        }
+        .info-block
+        {
+            padding:24px;
+        }
+        .auth-shell
+        {
+            max-width:1120px;
+            margin:0 auto;
+            padding:34px 0 10px;
+            display:grid;
+            grid-template-columns:minmax(0, 1fr) minmax(320px, 420px);
+            gap:24px;
+        }
+        .auth-card
+        {
+            padding:30px;
+        }
+        .auth-panel
+        {
+            padding:34px;
+        }
+        .auth-title
+        {
+            font-size:42px;
+            line-height:1.06;
+            margin:8px 0 14px;
+        }
+        .auth-links
+        {
+            display:flex;
+            flex-wrap:wrap;
+            gap:14px;
+            margin-top:18px;
+        }
+        .validator
+        {
+            display:block;
+            margin-top:8px;
+            color:#b42318;
+            font-size:13px;
+        }
+        .contact-lines
+        {
+            display:grid;
+            gap:10px;
+        }
+        .contact-value
+        {
+            font-size:20px;
+            margin:0;
+        }
+        .accent-card
+        {
+            background:linear-gradient(160deg, #f7ebde, #efe0cb);
+        }
+        .footer-copy
+        {
+            padding:34px 0 10px;
+            color:var(--muted);
+            font-size:13px;
+            text-align:center;
+        }
+        @media screen and (max-width: 900px)
+        {
+            .header-row
+            {
+                flex-direction:column;
+                align-items:flex-start;
+            }
+            .page-shell
+            {
+                padding:0 16px 36px;
+            }
+            .section-title
+            {
+                font-size:28px;
+            }
+            .split-hero,
+            .auth-shell
+            {
+                grid-template-columns:1fr;
+            }
+            .hero-content,
+            .auth-panel,
+            .auth-card
+            {
+                padding:28px;
+            }
+            .auth-title
+            {
+                font-size:34px;
+            }
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="site-header">
+            <div class="header-row">
+                <a href="Home.aspx" class="brand">
+                    <span class="brand-mark">CasaCraft</span>
+                    <span class="brand-sub">Handcrafted Decor Store</span>
+                </a>
+                <div class="nav-links">
+                    <a class="nav-link" href="Home.aspx">Home</a>
+                    <a class="nav-link" href="bid house.aspx">Bird House</a>
+                    <a class="nav-link" href="lamp.aspx">Lamps</a>
+                    <a class="nav-link" href="statue.aspx">Statues</a>
+                    <a class="nav-link" href="About Us.aspx">About</a>
+                    <a class="nav-link" href="Contact Us.aspx">Contact</a>
+                    <a class="nav-link" href="Admin.aspx">Admin</a>
+                    <a class="nav-soft" href="Login.aspx">Login</a>
+                    <a class="nav-soft" href="Registration.aspx">Register</a>
+                    <a class="nav-cta" href="Cart.aspx">Cart <asp:Label ID="lblCartCount" runat="server" CssClass="cart-pill" Text="0"></asp:Label></a>
+                </div>
+            </div>
+        </div>
+        <div class="page-shell">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+            <div class="footer-copy">CasaCraft is a polished handcrafted decor storefront with catalog management, responsive shopping flows, and order administration.</div>
+        </div>
+    </form>
+</body>
+</html>
