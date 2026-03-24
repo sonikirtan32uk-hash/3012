@@ -1,6 +1,59 @@
 <%@ Page Title="Registration" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Registration.aspx.cs" Inherits="Registration" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style type="text/css">
+        .postcode-shell
+        {
+            display:grid;
+            gap:12px;
+        }
+        .postcode-row
+        {
+            display:grid;
+            grid-template-columns:minmax(0, 1fr) auto;
+            gap:10px;
+            align-items:start;
+        }
+        .postcode-status
+        {
+            min-height:20px;
+            color:var(--muted);
+            font-size:13px;
+            line-height:1.5;
+        }
+        .postcode-status.error
+        {
+            color:#b42318;
+        }
+        .postcode-status.success
+        {
+            color:var(--success);
+        }
+        .lookup-select
+        {
+            width:100%;
+            padding:12px 14px;
+            border-radius:14px;
+            border:1px solid var(--line);
+            background:#fff;
+            font-family:inherit;
+            font-size:14px;
+        }
+        .lookup-empty
+        {
+            display:none;
+            color:#b42318;
+            font-size:13px;
+        }
+        @media screen and (max-width: 900px)
+        {
+            .postcode-row
+            {
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="Scripts/uk-postcode-address-lookup.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class="auth-shell">
@@ -50,8 +103,35 @@
                 </div>
                 <div class="field full">
                     <asp:Label ID="Label7" runat="server" Text="Postcode"></asp:Label>
-                    <asp:TextBox ID="txtPin" runat="server" placeholder="SW1A 1AA"></asp:TextBox>
+                    <div class="postcode-shell">
+                        <div class="postcode-row">
+                            <asp:TextBox ID="txtPin" runat="server" placeholder="SW1A 1AA"></asp:TextBox>
+                            <button id="registrationPostcodeLookup" type="button" class="btn-secondary">Find addresses</button>
+                        </div>
+                        <div id="registrationPostcodeStatus" class="postcode-status">Find the postcode to confirm the customer area before signup.</div>
+                    </div>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtPin" EnableViewState="False" ErrorMessage="Postcode is required" ForeColor="Red" CssClass="validator"></asp:RequiredFieldValidator>
+                </div>
+                <div class="field full">
+                    <label for="registrationAddressSelect">Available addresses</label>
+                    <select id="registrationAddressSelect" class="lookup-select" disabled="disabled"></select>
+                    <div id="registrationNoResults" class="lookup-empty">No addresses were returned for that postcode.</div>
+                </div>
+                <div class="field full">
+                    <label for="registrationSelectedAddress">Selected address</label>
+                    <textarea id="registrationSelectedAddress" rows="3" readonly="readonly" placeholder="Choose an address to preview it here"></textarea>
+                </div>
+                <div class="field">
+                    <label for="registrationCity">City</label>
+                    <input id="registrationCity" type="text" readonly="readonly" />
+                </div>
+                <div class="field">
+                    <label for="registrationCounty">County</label>
+                    <input id="registrationCounty" type="text" readonly="readonly" />
+                </div>
+                <div class="field">
+                    <label for="registrationCountry">Country</label>
+                    <input id="registrationCountry" type="text" readonly="readonly" />
                 </div>
             </div>
             <div class="auth-links">
@@ -60,4 +140,19 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var registrationAddressLookup = new UkPostcodeAddressLookup({
+            postcodeId: '<%= txtPin.ClientID %>',
+            lookupButtonId: 'registrationPostcodeLookup',
+            statusId: 'registrationPostcodeStatus',
+            selectId: 'registrationAddressSelect',
+            noResultsId: 'registrationNoResults',
+            formattedId: 'registrationSelectedAddress',
+            cityId: 'registrationCity',
+            countyId: 'registrationCounty',
+            countryId: 'registrationCountry',
+            lookupUrl: 'AddressLookup.ashx'
+        });
+        registrationAddressLookup.init();
+    </script>
 </asp:Content>

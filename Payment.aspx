@@ -38,14 +38,62 @@
             padding:12px 0;
             border-bottom:1px solid var(--line);
         }
+        .postcode-shell
+        {
+            display:grid;
+            gap:12px;
+        }
+        .postcode-row
+        {
+            display:grid;
+            grid-template-columns:minmax(0, 1fr) auto;
+            gap:10px;
+            align-items:start;
+        }
+        .postcode-status
+        {
+            min-height:20px;
+            color:var(--muted);
+            font-size:13px;
+            line-height:1.5;
+        }
+        .postcode-status.error
+        {
+            color:#b42318;
+        }
+        .postcode-status.success
+        {
+            color:var(--success);
+        }
+        .lookup-select
+        {
+            width:100%;
+            padding:12px 14px;
+            border-radius:14px;
+            border:1px solid var(--line);
+            background:#fff;
+            font-family:inherit;
+            font-size:14px;
+        }
+        .lookup-empty
+        {
+            display:none;
+            color:#b42318;
+            font-size:13px;
+        }
         @media screen and (max-width: 900px)
         {
             .checkout-layout
             {
                 grid-template-columns:1fr;
             }
+            .postcode-row
+            {
+                grid-template-columns:1fr;
+            }
         }
     </style>
+    <script type="text/javascript" src="Scripts/uk-postcode-address-lookup.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:Label ID="lblPaymentMessage" runat="server" Visible="false" CssClass="message"></asp:Label>
@@ -95,8 +143,19 @@
                     </div>
                     <div class="field">
                         <label for="txtPin">Postcode</label>
-                        <asp:TextBox ID="txtPin" runat="server" placeholder="SW1A 1AA"></asp:TextBox>
+                        <div class="postcode-shell">
+                            <div class="postcode-row">
+                                <asp:TextBox ID="txtPin" runat="server" placeholder="SW1A 1AA"></asp:TextBox>
+                                <button id="checkoutPostcodeLookup" type="button" class="btn-secondary">Find addresses</button>
+                            </div>
+                            <div id="checkoutPostcodeStatus" class="postcode-status">Enter a UK postcode to load available delivery addresses.</div>
+                        </div>
                         <asp:RequiredFieldValidator ID="rfvPincode" runat="server" ControlToValidate="txtPin" ErrorMessage="Enter postcode" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
+                    <div class="field full">
+                        <label for="checkoutAddressSelect">Available addresses</label>
+                        <select id="checkoutAddressSelect" class="lookup-select" disabled="disabled"></select>
+                        <div id="checkoutNoResults" class="lookup-empty">No addresses were returned for that postcode.</div>
                     </div>
                     <div class="field full payment-methods">
                         <label style="border:none; padding:0; background:none;">Payment method</label>
@@ -140,4 +199,18 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var checkoutAddressLookup = new UkPostcodeAddressLookup({
+            postcodeId: '<%= txtPin.ClientID %>',
+            lookupButtonId: 'checkoutPostcodeLookup',
+            statusId: 'checkoutPostcodeStatus',
+            selectId: 'checkoutAddressSelect',
+            noResultsId: 'checkoutNoResults',
+            streetId: '<%= txtAddress.ClientID %>',
+            cityId: '<%= txtCity.ClientID %>',
+            countyId: '<%= txtState.ClientID %>',
+            lookupUrl: 'AddressLookup.ashx'
+        });
+        checkoutAddressLookup.init();
+    </script>
 </asp:Content>
