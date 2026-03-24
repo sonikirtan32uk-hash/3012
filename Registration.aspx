@@ -30,12 +30,12 @@
                 </div>
                 <div class="field">
                     <asp:Label ID="Label3" runat="server" Text="Phone number"></asp:Label>
-                    <asp:TextBox ID="txtPhone" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtPhone" runat="server" placeholder="+44 7700 900123"></asp:TextBox>
                     <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtPhone" ErrorMessage="Please enter a valid phone number" ForeColor="Red" CssClass="validator" MaximumValue="99999999999" MinimumValue="10000000000" Type="Double"></asp:RangeValidator>
                 </div>
                 <div class="field">
                     <asp:Label ID="Label4" runat="server" Text="Email"></asp:Label>
-                    <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtEmail" runat="server" placeholder="you@example.co.uk"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtEmail" ErrorMessage="Please enter valid email" ForeColor="Red" CssClass="validator" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
                 </div>
                 <div class="field">
@@ -49,9 +49,9 @@
                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="txtPass" ControlToValidate="txtRpass" ErrorMessage="Password and retype password should match" ForeColor="Red" CssClass="validator"></asp:CompareValidator>
                 </div>
                 <div class="field full">
-                    <asp:Label ID="Label7" runat="server" Text="Pincode"></asp:Label>
-                    <asp:TextBox ID="txtPin" runat="server"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtPin" EnableViewState="False" ErrorMessage="Pincode is required" ForeColor="Red" CssClass="validator"></asp:RequiredFieldValidator>
+                    <asp:Label ID="Label7" runat="server" Text="Postcode"></asp:Label>
+                    <asp:TextBox ID="txtPin" runat="server" placeholder="SW1A 1AA"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtPin" EnableViewState="False" ErrorMessage="Postcode is required" ForeColor="Red" CssClass="validator"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="auth-links">

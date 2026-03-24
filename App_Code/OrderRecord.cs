@@ -13,6 +13,7 @@ public class OrderRecord
     public string Pincode { get; set; }
     public string PaymentMethod { get; set; }
     public string PaymentReference { get; set; }
+    public string DeliveryStatus { get; set; }
     public decimal TotalAmount { get; set; }
     public DateTime CreatedAt { get; set; }
     public List<CartItem> Items { get; set; }

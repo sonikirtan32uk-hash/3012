@@ -32,9 +32,12 @@
                     <div class="eyebrow"><%# Eval("Category") %></div>
                     <h3 style="margin:0; font-size:24px;"><%# Eval("Name") %></h3>
                     <p class="muted" style="margin:0; line-height:1.6;"><%# Eval("Description") %></p>
-                    <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;">
+                    <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
                         <span class="price">Rs. <%# Eval("Price", "{0:0.##}") %></span>
-                        <asp:Button ID="btnAddToCart" runat="server" Text="Add to cart" CssClass="catalog-btn" CommandName="AddToCart" CommandArgument='<%# Eval("Id") %>' />
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <a href='Reviews.aspx?productId=<%# Eval("Id") %>' class="btn-secondary">Reviews</a>
+                            <asp:Button ID="btnAddToCart" runat="server" Text="Add to cart" CssClass="catalog-btn" CommandName="AddToCart" CommandArgument='<%# Eval("Id") %>' />
+                        </div>
                     </div>
                 </div>
             </div>

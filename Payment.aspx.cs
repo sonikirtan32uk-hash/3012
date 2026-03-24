@@ -62,6 +62,7 @@ public partial class Payment : System.Web.UI.Page
             Pincode = txtPin.Text.Trim(),
             PaymentMethod = rblPaymentMethod.SelectedValue,
             PaymentReference = txtPaymentReference.Text.Trim(),
+            DeliveryStatus = "Processing",
             TotalAmount = CartService.GetTotal(),
             CreatedAt = DateTime.Now,
             Items = new List<CartItem>(cart)

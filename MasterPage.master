@@ -495,6 +495,151 @@
             font-size:13px;
             text-align:center;
         }
+        .chatbot-launcher
+        {
+            position:fixed;
+            right:22px;
+            bottom:22px;
+            z-index:30;
+            min-width:146px;
+            height:58px;
+            border:none;
+            border-radius:999px;
+            background:linear-gradient(145deg, var(--accent), var(--accent-dark));
+            color:#fff;
+            box-shadow:var(--shadow);
+            cursor:pointer;
+            font-size:15px;
+            font-weight:bold;
+            letter-spacing:0.5px;
+            padding:0 20px;
+        }
+        .chatbot-panel
+        {
+            position:fixed;
+            right:22px;
+            bottom:98px;
+            z-index:30;
+            width:360px;
+            max-width:calc(100vw - 24px);
+            background:var(--surface);
+            border:1px solid var(--line);
+            border-radius:24px;
+            box-shadow:var(--shadow);
+            overflow:hidden;
+            display:none;
+        }
+        .chatbot-panel.open
+        {
+            display:block;
+        }
+        .chatbot-header
+        {
+            padding:18px 20px;
+            background:linear-gradient(145deg, rgba(184,92,56,0.14), rgba(29,43,42,0.08));
+            border-bottom:1px solid var(--line);
+        }
+        .chatbot-title
+        {
+            margin:0;
+            font-size:20px;
+        }
+        .chatbot-copy
+        {
+            margin:6px 0 0;
+            color:var(--muted);
+            font-size:13px;
+            line-height:1.5;
+        }
+        .chatbot-messages
+        {
+            max-height:360px;
+            overflow-y:auto;
+            padding:18px;
+            display:grid;
+            gap:12px;
+            background:#fffdfa;
+        }
+        .chatbot-bubble
+        {
+            padding:12px 14px;
+            border-radius:16px;
+            line-height:1.6;
+            font-size:14px;
+            white-space:pre-line;
+        }
+        .chatbot-bubble.bot
+        {
+            background:var(--surface-alt);
+            color:var(--ink);
+            margin-right:28px;
+        }
+        .chatbot-bubble.user
+        {
+            background:var(--accent);
+            color:#fff;
+            margin-left:28px;
+        }
+        .chatbot-actions
+        {
+            padding:14px 18px 0;
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+        }
+        .chatbot-toolbar
+        {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+            padding:12px 18px 0;
+        }
+        .chatbot-clear
+        {
+            border:none;
+            background:none;
+            color:var(--accent-dark);
+            cursor:pointer;
+            font-size:12px;
+            padding:0;
+            font-family:inherit;
+        }
+        .chatbot-chip
+        {
+            border:1px solid var(--line);
+            background:#fff;
+            border-radius:999px;
+            padding:8px 12px;
+            font-size:12px;
+            cursor:pointer;
+        }
+        .chatbot-input-row
+        {
+            display:flex;
+            gap:10px;
+            padding:16px 18px 18px;
+            border-top:1px solid var(--line);
+        }
+        .chatbot-input
+        {
+            flex:1;
+            border:1px solid var(--line);
+            border-radius:16px;
+            padding:12px 14px;
+            font-family:inherit;
+            font-size:14px;
+        }
+        .chatbot-send
+        {
+            border:none;
+            border-radius:16px;
+            padding:12px 16px;
+            background:var(--accent);
+            color:#fff;
+            cursor:pointer;
+            font-family:inherit;
+        }
         @media screen and (max-width: 900px)
         {
             .header-row
@@ -525,6 +670,17 @@
             {
                 font-size:34px;
             }
+            .chatbot-panel
+            {
+                right:12px;
+                bottom:88px;
+                width:calc(100vw - 24px);
+            }
+            .chatbot-launcher
+            {
+                right:12px;
+                bottom:12px;
+            }
         }
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server" />
@@ -544,7 +700,6 @@
                     <a class="nav-link" href="statue.aspx">Statues</a>
                     <a class="nav-link" href="About Us.aspx">About</a>
                     <a class="nav-link" href="Contact Us.aspx">Contact</a>
-                    <a class="nav-link" href="Admin.aspx">Admin</a>
                     <a class="nav-soft" href="Login.aspx">Login</a>
                     <a class="nav-soft" href="Registration.aspx">Register</a>
                     <a class="nav-cta" href="Cart.aspx">Cart <asp:Label ID="lblCartCount" runat="server" CssClass="cart-pill" Text="0"></asp:Label></a>
@@ -555,6 +710,203 @@
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
             <div class="footer-copy">CasaCraft is a polished handcrafted decor storefront with catalog management, responsive shopping flows, and order administration.</div>
         </div>
+
+        <div id="supportBot" class="chatbot-panel">
+            <div class="chatbot-header">
+                <h3 class="chatbot-title">CasaCraft Support AI</h3>
+                <p class="chatbot-copy">Ask about products, cart, payment, delivery, reviews, or contact details.</p>
+            </div>
+            <div class="chatbot-toolbar">
+                <div class="eyebrow">Session memory enabled</div>
+                <button id="supportClear" type="button" class="chatbot-clear">Clear chat</button>
+            </div>
+            <div id="supportMessages" class="chatbot-messages"></div>
+            <div class="chatbot-actions">
+                <button type="button" class="chatbot-chip" data-prompt="How do I place an order?">Place order</button>
+                <button type="button" class="chatbot-chip" data-prompt="What payment methods do you support?">Payment help</button>
+                <button type="button" class="chatbot-chip" data-prompt="How can I track my order?">Track order</button>
+                <button type="button" class="chatbot-chip" data-prompt="How do I leave a review?">Leave review</button>
+            </div>
+            <div class="chatbot-input-row">
+                <input id="supportInput" type="text" class="chatbot-input" placeholder="Type your support question" />
+                <button id="supportSend" type="button" class="chatbot-send">Send</button>
+            </div>
+        </div>
+        <button id="supportLauncher" type="button" class="chatbot-launcher" title="Open customer support">AI Support Chat</button>
     </form>
+    <script type="text/javascript">
+        (function () {
+            var launcher = document.getElementById('supportLauncher');
+            var panel = document.getElementById('supportBot');
+            var messages = document.getElementById('supportMessages');
+            var input = document.getElementById('supportInput');
+            var send = document.getElementById('supportSend');
+            var clear = document.getElementById('supportClear');
+            var chips = panel ? panel.querySelectorAll('.chatbot-chip') : [];
+            var hasLoadedHistory = false;
+
+            if (!launcher || !panel || !messages || !input || !send || !clear) {
+                return;
+            }
+
+            function addMessage(text, role) {
+                var bubble = document.createElement('div');
+                bubble.className = 'chatbot-bubble ' + role;
+                bubble.textContent = text;
+                messages.appendChild(bubble);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            function renderConversation(history) {
+                if (!history || !history.length) {
+                    if (!messages.children.length) {
+                        addMessage('Hello. I am the CasaCraft support assistant. Ask me about products, payment, delivery, reviews, or checkout.', 'bot');
+                    }
+                    return;
+                }
+
+                messages.innerHTML = '';
+                for (var i = 0; i < history.length; i++) {
+                    var turn = history[i];
+                    addMessage(turn.Text || '', turn.Role === 'user' ? 'user' : 'bot');
+                }
+            }
+
+            function getFallbackReply() {
+                return 'The AI assistant is unavailable right now. You can still ask about orders, payment, delivery, reviews, or contact support on Contact Us.aspx.';
+            }
+
+            function loadHistory() {
+                if (hasLoadedHistory) {
+                    return;
+                }
+
+                var request = new XMLHttpRequest();
+                request.open('GET', 'SupportChat.ashx', true);
+                request.onreadystatechange = function () {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+
+                    hasLoadedHistory = true;
+                    if (request.status >= 200 && request.status < 300) {
+                        try {
+                            var data = JSON.parse(request.responseText);
+                            renderConversation(data.messages || []);
+                            return;
+                        } catch (e) {
+                        }
+                    }
+
+                    if (!messages.children.length) {
+                        addMessage('Hello. I am the CasaCraft support assistant. Ask me about products, payment, delivery, reviews, or checkout.', 'bot');
+                    }
+                };
+                request.send(null);
+            }
+
+            function clearHistory() {
+                var request = new XMLHttpRequest();
+                request.open('GET', 'SupportChat.ashx?action=clear', true);
+                request.onreadystatechange = function () {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+
+                    hasLoadedHistory = true;
+                    messages.innerHTML = '';
+                    addMessage('Hello. I am the CasaCraft support assistant. Ask me about products, payment, delivery, reviews, or checkout.', 'bot');
+                };
+                request.send(null);
+            }
+
+            function openBot() {
+                loadHistory();
+                if (panel.className.indexOf('open') === -1) {
+                    panel.className += ' open';
+                }
+                input.focus();
+            }
+
+            function toggleBot() {
+                if (panel.className.indexOf('open') === -1) {
+                    openBot();
+                } else {
+                    panel.className = panel.className.replace(' open', '');
+                }
+            }
+
+            function handleSend(promptText) {
+                var text = promptText || input.value;
+                if (!text || !text.replace(/\s+/g, '').length) {
+                    return;
+                }
+
+                addMessage(text, 'user');
+                input.value = '';
+                openBot();
+
+                var request = new XMLHttpRequest();
+                request.open('POST', 'SupportChat.ashx', true);
+                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+                request.onreadystatechange = function () {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+
+                    if (request.status >= 200 && request.status < 300) {
+                        try {
+                            var data = JSON.parse(request.responseText);
+                            renderConversation(data.messages || []);
+                            return;
+                        } catch (e) {
+                        }
+                    }
+
+                    addMessage(getFallbackReply(), 'bot');
+                };
+                request.send(JSON.stringify({
+                    message: text,
+                    page: window.location.pathname
+                }));
+            }
+
+            launcher.onclick = toggleBot;
+            send.onclick = function () { handleSend(); };
+            input.onkeydown = function (event) {
+                event = event || window.event;
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                    if (event.preventDefault) {
+                        event.preventDefault();
+                    }
+                    handleSend();
+                    return false;
+                }
+            };
+
+            for (var i = 0; i < chips.length; i++) {
+                chips[i].onclick = function () {
+                    handleSend(this.getAttribute('data-prompt'));
+                };
+            }
+
+            clear.onclick = clearHistory;
+
+            loadHistory();
+
+            try {
+                if (!window.sessionStorage.getItem('casaCraftSupportSeen')) {
+                    window.sessionStorage.setItem('casaCraftSupportSeen', '1');
+                    window.setTimeout(function () {
+                        openBot();
+                    }, 900);
+                }
+            } catch (e) {
+                window.setTimeout(function () {
+                    openBot();
+                }, 900);
+            }
+        })();
+    </script>
 </body>
 </html>

@@ -20,6 +20,13 @@ public static class OrderRepository
         string json = File.ReadAllText(OrdersPath);
         JavaScriptSerializer serializer = new JavaScriptSerializer();
         List<OrderRecord> orders = serializer.Deserialize<List<OrderRecord>>(json) ?? new List<OrderRecord>();
+        foreach (OrderRecord order in orders)
+        {
+            if (String.IsNullOrWhiteSpace(order.DeliveryStatus))
+            {
+                order.DeliveryStatus = "Processing";
+            }
+        }
         return orders.OrderByDescending(o => o.CreatedAt).ToList();
     }
 
@@ -29,6 +36,14 @@ public static class OrderRepository
         {
             List<OrderRecord> orders = GetAll();
             orders.Add(order);
+            SaveAll(orders);
+        }
+    }
+
+    public static void SaveAll(List<OrderRecord> orders)
+    {
+        lock (SyncRoot)
+        {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             File.WriteAllText(OrdersPath, serializer.Serialize(orders));
         }

@@ -23,6 +23,13 @@
             border-radius:14px;
             background:#fff;
         }
+        .payment-note
+        {
+            margin-top:8px;
+            color:var(--muted);
+            font-size:13px;
+            line-height:1.6;
+        }
         .order-item
         {
             display:flex;
@@ -54,54 +61,56 @@
                 <div class="form-grid">
                     <div class="field">
                         <label for="txtUname">Full name</label>
-                        <asp:TextBox ID="txtUname" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtUname" runat="server" placeholder="Oliver Bennett"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtUname" ErrorMessage="Enter name" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="field">
                         <label for="txtEmail">Email</label>
-                        <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtEmail" runat="server" placeholder="oliver.bennett@example.co.uk"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" ErrorMessage="Enter email" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="field">
-                        <label for="txtPhone">Phone</label>
-                        <asp:TextBox ID="txtPhone" runat="server"></asp:TextBox>
+                        <label for="txtPhone">Phone number</label>
+                        <asp:TextBox ID="txtPhone" runat="server" placeholder="+44 7700 900123"></asp:TextBox>
                     </div>
                     <div class="field">
                         <label for="txtAmount">Order total</label>
                         <asp:TextBox ID="txtAmount" runat="server" ReadOnly="true"></asp:TextBox>
                     </div>
                     <div class="field full">
-                        <label for="txtAddress">Address</label>
-                        <asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                        <label for="txtAddress">Address line 1</label>
+                        <asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" Rows="3" placeholder="Flat 4B&#10;18 Kensington High Street"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvAddress" runat="server" ControlToValidate="txtAddress" ErrorMessage="Enter address" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <div class="payment-note">Use a full delivery address, for example flat or house number followed by street name.</div>
                     </div>
                     <div class="field">
-                        <label for="txtCity">City</label>
-                        <asp:TextBox ID="txtCity" runat="server"></asp:TextBox>
+                        <label for="txtCity">Town or city</label>
+                        <asp:TextBox ID="txtCity" runat="server" placeholder="London"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvCity" runat="server" ControlToValidate="txtCity" ErrorMessage="Enter city" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="field">
-                        <label for="txtState">State</label>
-                        <asp:TextBox ID="txtState" runat="server"></asp:TextBox>
+                        <label for="txtState">County</label>
+                        <asp:TextBox ID="txtState" runat="server" placeholder="Greater London"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvState" runat="server" ControlToValidate="txtState" ErrorMessage="Enter state" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="field">
-                        <label for="txtPin">Pincode</label>
-                        <asp:TextBox ID="txtPin" runat="server"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvPincode" runat="server" ControlToValidate="txtPin" ErrorMessage="Enter pincode" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <label for="txtPin">Postcode</label>
+                        <asp:TextBox ID="txtPin" runat="server" placeholder="SW1A 1AA"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvPincode" runat="server" ControlToValidate="txtPin" ErrorMessage="Enter postcode" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="field full payment-methods">
-                        <label style="border:none; padding:0; background:none;">Payment option</label>
+                        <label style="border:none; padding:0; background:none;">Payment method</label>
                         <asp:RadioButtonList ID="rblPaymentMethod" runat="server" RepeatLayout="Flow">
-                            <asp:ListItem Selected="True">Cash on Delivery</asp:ListItem>
-                            <asp:ListItem>UPI</asp:ListItem>
-                            <asp:ListItem>Credit or Debit Card</asp:ListItem>
-                            <asp:ListItem>Net Banking</asp:ListItem>
+                            <asp:ListItem Selected="True">Visa or Mastercard</asp:ListItem>
+                            <asp:ListItem>PayPal</asp:ListItem>
+                            <asp:ListItem>Apple Pay or Google Pay</asp:ListItem>
+                            <asp:ListItem>Bank Transfer</asp:ListItem>
                         </asp:RadioButtonList>
+                        <div class="payment-note">Demo checkout only. No live payment is processed, but the flow now reflects common UK-facing payment choices.</div>
                     </div>
                     <div class="field full">
                         <label for="txtPaymentReference">Payment reference or notes</label>
-                        <asp:TextBox ID="txtPaymentReference" runat="server" placeholder="UPI transaction id, card last 4 digits, or bank reference"></asp:TextBox>
+                        <asp:TextBox ID="txtPaymentReference" runat="server" placeholder="Example: Visa ending 4242, PayPal transaction reference, or bank transfer confirmation"></asp:TextBox>
                     </div>
                 </div>
                 <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
